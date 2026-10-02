@@ -1,0 +1,547 @@
+.venu-avatar {
+  width: 24px;
+  height: 24px;
+}
+
+.venu-avatar:before {
+  content: url("images/avatar_24px.png");
+}
+
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi), (min-resolution: 1.5dppx) {
+  .venu-avatar:before {
+    content: url("images/avatar_24px_2x.png");
+    -webkit-transform: translate(-25%, -25%) scale(0.5);
+    transform: translate(-25%, -25%) scale(0.5);
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body.oj-web-applayout-body {
+  background: var(--oj-core-neutral-30, #f1efed);
+}
+
+#appContainer {
+  min-height: 100vh;
+}
+
+.venu-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--oj-core-neutral-30, #f1efed);
+}
+
+.venu-header {
+  background: #fff;
+  border-bottom: 1px solid var(--oj-core-divider-color, #d9d6d2);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.venu-header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  min-height: 56px;
+}
+
+.venu-product {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.venu-product-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--oj-core-text-color-primary, #161513);
+}
+
+.venu-userchip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--oj-core-text-color-primary, #161513);
+  font-size: 0.875rem;
+}
+
+.venu-body {
+  display: flex;
+  flex: 1;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 24px 48px;
+  gap: 24px;
+  box-sizing: border-box;
+}
+
+.venu-nav {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.venu-nav-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #fff;
+  border: 1px solid var(--oj-core-divider-color, #d9d6d2);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.venu-nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 40px;
+  box-sizing: border-box;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: var(--oj-core-text-color-primary, #161513);
+  font: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.venu-nav-button:hover {
+  background: var(--oj-core-neutral-20, #f7f5f4);
+}
+
+.venu-nav-button.is-selected {
+  background: var(--oj-core-neutral-40, #e8e6e3);
+  font-weight: 600;
+}
+
+.venu-nav-label {
+  min-width: 0;
+  flex: 1 1 auto;
+  white-space: nowrap;
+}
+
+.venu-nav-meta {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--oj-core-neutral-30, #f1efed);
+  color: var(--oj-core-text-color-secondary, #5f5a55);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.venu-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.venu-pagehead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.venu-pagehead h1 {
+  margin: 0 0 4px;
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--oj-core-text-color-primary, #161513);
+}
+
+.venu-pagehead p,
+.venu-lede {
+  margin: 0;
+  max-width: 46rem;
+  color: var(--oj-core-text-color-secondary, #5f5a55);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.venu-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.venu-banner {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--oj-core-divider-color, #d9d6d2);
+}
+
+.venu-banner.is-info {
+  border-left: 4px solid var(--oj-core-info-30, #31708f);
+}
+
+.venu-banner.is-confirmation {
+  border-left: 4px solid var(--oj-core-success-30, #2e7d32);
+}
+
+.venu-banner.is-warning {
+  border-left: 4px solid var(--oj-palette-warning-70, #b26a00);
+}
+
+.venu-banner h2 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+
+.venu-banner p {
+  margin: 0;
+  color: var(--oj-core-text-color-secondary, #5f5a55);
+  font-size: 0.875rem;
+}
+
+.venu-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.venu-chip {
+  border: 1px solid var(--oj-core-divider-color, #d9d6d2);
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  color: var(--oj-core-text-color-primary, #161513);
+}
+
+.venu-chip.is-selected {
+  background: var(--oj-core-neutral-170, #161513);
+  border-color: var(--oj-core-neutral-170, #161513);
+  color: #fff;
+}
+
+.venu-search {
+  margin-bottom: 16px;
+  max-width: 420px;
+}
+
+.venu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.venu-card,
+.venu-panel {
+  background: #fff;
+  border: 1px solid var(--oj-core-divider-color, #d9d6d2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.venu-card {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  font: inherit;
+  width: 100%;
+  color: inherit;
+}
+
+.venu-card:hover,
+.venu-card:focus-visible {
+  box-shadow: 0 8px 24px rgba(22, 21, 19, 0.08);
+  outline: none;
+}
+
+.venu-poster {
+  height: 112px;
+  padding: 16px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.venu-poster.is-music { background: linear-gradient(135deg, #7a2e22, #c74634); }
+.venu-poster.is-sports { background: linear-gradient(135deg, #1f4a3a, #3d7a5f); }
+.venu-poster.is-comedy { background: linear-gradient(135deg, #8a5a16, #d4a017); }
+.venu-poster.is-theater { background: linear-gradient(135deg, #4a2d55, #7b4b86); }
+.venu-poster.is-arts { background: linear-gradient(135deg, #2c3d55, #4d6a8a); }
+.venu-poster.is-family { background: linear-gradient(135deg, #1f4f4a, #3d8a7a); }
+
+.venu-kicker {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.venu-card-body,
+.venu-panel-body {
+  padding: 14px 16px 16px;
+}
+
+.venu-card-body h3,
+.venu-panel h2,
+.venu-section-title {
+  margin: 0 0 4px;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.venu-meta {
+  margin: 0;
+  color: var(--oj-core-text-color-secondary, #5f5a55);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.venu-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.venu-ticket {
+  padding: 16px 18px;
+}
+
+.venu-empty {
+  padding: 28px 20px;
+  text-align: left;
+}
+
+.venu-empty h2 {
+  margin: 0 0 6px;
+  font-size: 1.125rem;
+}
+
+.venu-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--oj-core-divider-color, #d9d6d2);
+  margin-bottom: 16px;
+}
+
+.venu-tab {
+  border: 0;
+  background: transparent;
+  padding: 10px 14px 12px;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--oj-core-text-color-secondary, #5f5a55);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.venu-tab.is-selected {
+  color: var(--oj-core-text-color-primary, #161513);
+  font-weight: 600;
+  border-bottom-color: var(--oj-core-neutral-170, #161513);
+}
+
+.venu-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+  gap: 16px;
+}
+
+.venu-hero {
+  height: 180px;
+  padding: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.venu-form {
+  display: grid;
+  gap: 16px;
+}
+
+.venu-signin {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 480px);
+}
+
+.venu-signin-story {
+  padding: 48px 56px;
+  background:
+    linear-gradient(160deg, rgba(22, 21, 19, 0.28), rgba(22, 21, 19, 0.55)),
+    linear-gradient(135deg, #7a2e22, #c74634 55%, #2c241f);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.venu-signin-story h1 {
+  margin: 12px 0 12px;
+  font-size: 2.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.venu-signin-story p {
+  max-width: 28rem;
+  line-height: 1.55;
+  font-size: 1.05rem;
+}
+
+.venu-signin-form {
+  background: #fff;
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.venu-signin-form h2 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+}
+
+.venu-qr {
+  width: 168px;
+  height: 168px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid var(--oj-core-divider-color, #d9d6d2);
+}
+
+.venu-qr svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.venu-settings-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--oj-core-divider-color, #d9d6d2);
+}
+
+.venu-settings-item:last-child {
+  border-bottom: 0;
+}
+
+.venu-list {
+  display: grid;
+  gap: 12px;
+}
+
+.venu-footer {
+  margin-top: auto;
+  background: #fff;
+  border-top: 1px solid var(--oj-core-divider-color, #d9d6d2);
+}
+
+.venu-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0;
+  padding: 16px 24px;
+  list-style: none;
+}
+
+.venu-footer a {
+  color: var(--oj-core-text-color-secondary, #5f5a55);
+  text-decoration: none;
+}
+
+.venu-footer a:hover {
+  color: var(--oj-core-text-color-primary, #161513);
+  text-decoration: underline;
+}
+
+.venu-help-list,
+.venu-inline-list {
+  margin: 8px 0 0;
+  padding-left: 1.1rem;
+  color: var(--oj-core-text-color-secondary, #5f5a55);
+}
+
+.venu-hidden {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .venu-signin {
+    grid-template-columns: 1fr;
+  }
+
+  .venu-signin-story {
+    padding: 32px 24px;
+    min-height: 220px;
+  }
+
+  .venu-body {
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .venu-nav {
+    width: 100%;
+  }
+
+  .venu-nav-card {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .venu-nav-button {
+    width: auto;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .venu-nav-label {
+    white-space: nowrap;
+  }
+
+  .venu-detail,
+  .venu-pagehead {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .venu-header-inner {
+    padding: 0 16px;
+  }
+}

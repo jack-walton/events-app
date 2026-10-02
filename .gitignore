@@ -1,0 +1,7 @@
+node_modules
+web
+.DS_Store
+.vercel
+.env*
+exchange_components
+staged-themes

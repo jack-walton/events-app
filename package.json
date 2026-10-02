@@ -1,0 +1,9 @@
+{
+  "name": "events-app",
+  "private": true,
+  "description": "VENU — Oracle JET and Redwood events app",
+  "scripts": {
+    "dev": "cd venu && npx ojet serve",
+    "build": "cd venu && npx ojet build --release"
+  }
+}
