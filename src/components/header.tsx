@@ -40,14 +40,23 @@ export function Header({ user, onSignOut }: Props) {
         </div>
         <div class="oj-flex-bar-end oj-sm-align-items-center">
           <oj-toolbar>
-            <oj-button
-              id="notifyBtn"
-              display={isSmallWidth ? "icons" : "all"}
-              chroming="borderless"
-              onojAction={() => navigate({ name: "notifications" })}
-            >
-              <span>Notifications{unread ? ` (${unread})` : ""}</span>
-            </oj-button>
+            <span class="venu-notify">
+              <oj-button
+                id="notifyBtn"
+                display="icons"
+                chroming="borderless"
+                title={unread ? `Notifications (${unread} unread)` : "Notifications"}
+                onojAction={() => navigate({ name: "notifications" })}
+              >
+                <span slot="startIcon" class="oj-ux-ico-notification"></span>
+                Notifications{unread ? ` (${unread} unread)` : ""}
+              </oj-button>
+              {unread ? (
+                <span class="venu-notify-badge" aria-hidden="true">
+                  {unread}
+                </span>
+              ) : null}
+            </span>
             <oj-menu-button
               id="userMenu"
               display={isSmallWidth ? "icons" : "all"}

@@ -1,9 +1,48 @@
 {
-  "name": "events-app",
-  "private": true,
-  "description": "VENU — Oracle JET and Redwood events app",
+  "name": "venu",
+  "version": "1.0.0",
+  "description": "An Oracle JavaScript Extension Toolkit(JET) web app",
+  "dependencies": {
+    "@oracle/oraclejet": "~21.0.0",
+    "@oracle/oraclejet-core-pack": "~21.0.0"
+  },
+  "devDependencies": {
+    "@oracle/ojet-cli": "~21.0.1",
+    "@prefresh/babel-plugin": "0.5.4",
+    "@prefresh/webpack": "4.0.7",
+    "@types/node": "18.16.3",
+    "clean-webpack-plugin": "4.0.0",
+    "compression-webpack-plugin": "12.0.0",
+    "copy-webpack-plugin": "14.0.0",
+    "css-fix-url-loader": "1.0.2",
+    "css-loader": "7.1.5",
+    "fs-extra": "^8.1.0",
+    "glob": "10.4.5",
+    "html-replace-webpack-plugin": "2.6.0",
+    "html-webpack-plugin": "5.6.8",
+    "mini-css-extract-plugin": "2.10.2",
+    "noop-loader": "1.0.0",
+    "raw-loader": "4.0.2",
+    "sass": "1.105.1",
+    "sass-loader": "17.0.1",
+    "style-loader": "4.0.0",
+    "ts-loader": "8.4.0",
+    "typescript": "5.8.3",
+    "underscore": "^1.10.2",
+    "webpack": "5.101.0",
+    "webpack-dev-server": "6.0.0",
+    "webpack-merge": "6.0.1",
+    "yargs-parser": "13.1.2"
+  },
   "scripts": {
-    "dev": "cd venu && npx ojet serve",
-    "build": "cd venu && npx ojet build --release"
+    "build": "ojet build --release",
+    "dev": "ojet serve"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "private": true,
+  "overrides": {
+    "@types/minimatch": "5.1.2"
   }
 }

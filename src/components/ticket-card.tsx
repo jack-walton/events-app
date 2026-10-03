@@ -26,7 +26,7 @@ export function TicketCard({
     <article class="venu-panel venu-ticket">
       <div class="venu-row">
         <div>
-          <p class="venu-kicker" style="color: var(--oj-core-text-color-secondary, #5f5a55)">
+          <p class="venu-kicker" style="color: var(--oj-core-text-color-secondary)">
             {event?.genre || "Event"}
           </p>
           <h3>{event?.name || "Event"}</h3>

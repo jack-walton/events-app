@@ -36,10 +36,10 @@ export function QrMark({ value, label }: Props) {
   return (
     <div class="venu-qr" role="img" aria-label={label || `Code for ${value}`}>
       <svg viewBox={`0 0 ${size} ${size}`} xmlns="http://www.w3.org/2000/svg">
-        <rect width={size} height={size} fill="#fff" />
+        <rect class="venu-qr-bg" width={size} height={size} />
         {cells.map((row, y) =>
           row.map((on, x) =>
-            on ? <rect x={x} y={y} width="1" height="1" fill="#161513" /> : null
+            on ? <rect class="venu-qr-fg" x={x} y={y} width="1" height="1" /> : null
           )
         )}
       </svg>

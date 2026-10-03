@@ -68,28 +68,38 @@ export function DiscoverPage({ events, location }: Props) {
           onvalueChanged={(event: CustomEvent) => setQuery(event.detail.value || "")}
         ></oj-c-input-text>
       </div>
-      <div class="venu-filters" role="group" aria-label="When">
-        {filters.map((filter) => (
-          <button
-            class={`venu-chip${when === filter.id ? " is-selected" : ""}`}
-            onClick={() => setWhen(filter.id)}
-          >
-            {filter.label}
-          </button>
-        ))}
+      <div class="venu-filter-field">
+        <p class="venu-filter-label" id="discover-when-label">
+          When
+        </p>
+        <div class="venu-filters" role="group" aria-labelledby="discover-when-label">
+          {filters.map((filter) => (
+            <button
+              class={`venu-chip${when === filter.id ? " is-selected" : ""}`}
+              onClick={() => setWhen(filter.id)}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </div>
       </div>
-      <div class="venu-filters" role="group" aria-label="Genre">
-        <button class={`venu-chip${genre === "" ? " is-selected" : ""}`} onClick={() => setGenre("")}>
-          All genres
-        </button>
-        {genres.map((item) => (
-          <button
-            class={`venu-chip${genre === item ? " is-selected" : ""}`}
-            onClick={() => setGenre(item)}
-          >
-            {item}
+      <div class="venu-filter-field">
+        <p class="venu-filter-label" id="discover-genre-label">
+          Genre
+        </p>
+        <div class="venu-filters" role="group" aria-labelledby="discover-genre-label">
+          <button class={`venu-chip${genre === "" ? " is-selected" : ""}`} onClick={() => setGenre("")}>
+            All genres
           </button>
-        ))}
+          {genres.map((item) => (
+            <button
+              class={`venu-chip${genre === item ? " is-selected" : ""}`}
+              onClick={() => setGenre(item)}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
       </div>
       {when === "all" && !query && !genre ? (
         <section style="margin-bottom: 24px">

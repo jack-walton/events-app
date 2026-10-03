@@ -8,10 +8,10 @@ type Props = {
 };
 
 const items: Array<{
-  id: Route["name"];
+  id: "discover" | "events" | "transfers";
   label: string;
   href: string;
-  note?: (count: number) => string | undefined;
+  note?: (count: number) => number | undefined;
 }> = [
   { id: "discover", label: "Discover", href: hrefFor({ name: "discover" }) },
   { id: "events", label: "Your events", href: hrefFor({ name: "events" }) },
@@ -19,9 +19,8 @@ const items: Array<{
     id: "transfers",
     label: "Transfers",
     href: hrefFor({ name: "transfers" }),
-    note: (count) => (count ? `${count} waiting` : undefined)
-  },
-  { id: "profile", label: "Profile", href: hrefFor({ name: "profile" }) }
+    note: (count) => (count ? count : undefined)
+  }
 ];
 
 export function SideNav({ route, pendingIncoming }: Props) {
@@ -32,16 +31,14 @@ export function SideNav({ route, pendingIncoming }: Props) {
         ? "events"
         : route.name === "transfer" || route.name === "transfers"
           ? "transfers"
-          : route.name === "notifications" || route.name === "profile"
-            ? "profile"
-            : route.name;
+          : undefined;
 
   return (
     <nav class="venu-nav" aria-label="Application">
       <div class="venu-nav-card">
         {items.map((item) => {
           const selected = current === item.id;
-          const note = item.note?.(pendingIncoming);
+          const waiting = item.note?.(pendingIncoming);
           return (
             <a
               class={`venu-nav-button${selected ? " is-selected" : ""}`}
@@ -49,7 +46,12 @@ export function SideNav({ route, pendingIncoming }: Props) {
               aria-current={selected ? "page" : undefined}
             >
               <span class="venu-nav-label">{item.label}</span>
-              {note ? <span class="venu-nav-meta">{note}</span> : null}
+              {waiting ? (
+                <span class="venu-nav-meta">
+                  <span class="venu-nav-meta-count">{waiting}</span>
+                  <span class="venu-nav-meta-label"> waiting</span>
+                </span>
+              ) : null}
             </a>
           );
         })}

@@ -1,7 +1,7 @@
 {
-  "buildCommand": "cd venu && npm ci && npm run build",
-  "outputDirectory": "venu/web",
-  "installCommand": "cd venu && npm ci",
+  "buildCommand": "npm run build",
+  "outputDirectory": "web",
+  "installCommand": "npm ci",
   "framework": null,
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
