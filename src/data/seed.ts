@@ -4,12 +4,12 @@ export function createSeedState(): AppState {
   return {
     signedIn: false,
     user: {
-      firstName: "Alex",
-      lastName: "Rivera",
-      email: "alex.rivera@example.com",
-      phone: "(347) 555-0148",
+      firstName: "Guest",
+      lastName: "",
+      email: "",
+      phone: "",
       location: "Brooklyn, NY",
-      mobileId: "VNU-AR-184029"
+      mobileId: "VNU-GUEST"
     },
     locationServices: true,
     appearance: "redwood",
@@ -266,8 +266,8 @@ export function createSeedState(): AppState {
         status: "accepted",
         recipientName: "Sam Okonkwo",
         recipientEmail: "sam.okonkwo@example.com",
-        senderName: "Alex Rivera",
-        senderEmail: "alex.rivera@example.com",
+        senderName: "Guest",
+        senderEmail: "",
         message: "Cannot make the matinee — these are yours.",
         createdAt: "2026-09-30T08:15:00",
         resolvedAt: "2026-09-30T12:41:00"
@@ -277,8 +277,8 @@ export function createSeedState(): AppState {
         ticketId: "tkt-national-in",
         direction: "incoming",
         status: "pending",
-        recipientName: "Alex Rivera",
-        recipientEmail: "alex.rivera@example.com",
+        recipientName: "Guest",
+        recipientEmail: "",
         senderName: "Jordan Hale",
         senderEmail: "jordan.hale@example.com",
         message: "Two seats if you can get to Forest Hills.",

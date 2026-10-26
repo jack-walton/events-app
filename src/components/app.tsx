@@ -3,7 +3,7 @@
  */
 import { registerCustomElement } from "ojs/ojvcomponent";
 import { h } from "preact";
-import { useEffect } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import Context = require("ojs/ojcontext");
 import { Header } from "./header";
 import { pendingIncomingCount, SideNav } from "./nav";
@@ -16,31 +16,78 @@ import { TicketDetailPage } from "./pages/ticket-detail";
 import { TransferWizardPage } from "./pages/transfer-wizard";
 import { TransfersPage } from "./pages/transfers";
 import { YourEventsPage } from "./pages/your-events";
+import { consumeAuthError, fetchAccountSession } from "../data/auth-client";
 import { navigate, useRoute } from "../data/router";
-import { getEvent, signOut, useAppState } from "../data/store";
+import { getEvent, signInWithAccount, signOutCurrent, useAppState } from "../data/store";
 import { Route } from "../data/types";
 
 export const App = registerCustomElement("app-root", () => {
   const state = useAppState();
   const route = useRoute();
+  const [authReady, setAuthReady] = useState(state.signedIn);
+  const [authError, setAuthError] = useState("");
 
   useEffect(() => {
     Context.getPageContext().getBusyContext().applicationBootstrapComplete();
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
+    if (consumeAuthError()) {
+      setAuthError("That sign-in link is expired or already used. Ask for a new one.");
+    }
+    fetchAccountSession()
+      .then((session) => {
+        if (!cancelled && session) {
+          signInWithAccount(session);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setAuthReady(true);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!authReady) {
+      return;
+    }
     if (!state.signedIn && route.name !== "signin") {
       navigate({ name: "signin" });
     }
     if (state.signedIn && route.name === "signin") {
       navigate({ name: "discover" });
     }
-  }, [state.signedIn, route.name]);
+  }, [authReady, state.signedIn, route.name]);
+
+  if (!authReady && !state.signedIn) {
+    return (
+      <div id="appContainer" class="oj-web-applayout-page">
+        <div class="venu-signin">
+          <section class="venu-signin-story">
+            <div>
+              <p class="venu-kicker">Events in New York</p>
+              <h1>VENU</h1>
+              <p>Hold your tickets. Pass them on when plans change.</p>
+            </div>
+          </section>
+          <section class="venu-signin-form">
+            <h2>Opening VENU</h2>
+            <p class="venu-lede">Checking whether you already have a session on this device.</p>
+          </section>
+        </div>
+      </div>
+    );
+  }
 
   if (!state.signedIn) {
     return (
       <div id="appContainer" class="oj-web-applayout-page">
-        <SignIn />
+        <SignIn authError={authError} />
       </div>
     );
   }
@@ -50,8 +97,7 @@ export const App = registerCustomElement("app-root", () => {
       <Header
         user={state.user}
         onSignOut={() => {
-          signOut();
-          navigate({ name: "signin" });
+          void signOutCurrent().then(() => navigate({ name: "signin" }));
         }}
       />
       <div class="venu-body">
@@ -84,10 +130,10 @@ function renderPage(route: Route, state: ReturnType<typeof useAppState>) {
       return (
         <ProfilePage
           user={state.user}
+          authMode={state.authMode}
           locationServices={state.locationServices}
           onSignOut={() => {
-            signOut();
-            navigate({ name: "signin" });
+            void signOutCurrent().then(() => navigate({ name: "signin" }));
           }}
         />
       );

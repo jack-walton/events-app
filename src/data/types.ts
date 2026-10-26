@@ -93,8 +93,17 @@ export interface UserProfile {
   mobileId: string;
 }
 
+export interface AccountSession {
+  id: string;
+  email: string;
+  name?: string;
+}
+
+export type AuthMode = "guest" | "account";
+
 export interface AppState {
   signedIn: boolean;
+  authMode?: AuthMode;
   user: UserProfile;
   events: EventItem[];
   tickets: Ticket[];

@@ -1,7 +1,7 @@
 import { h } from "preact";
 import "oj-c/button";
 import "oj-c/switch";
-import { UserProfile } from "../../data/types";
+import { AuthMode, UserProfile } from "../../data/types";
 import { resetAccount, setLocationServices } from "../../data/store";
 import { hrefFor, navigate } from "../../data/router";
 import { GUIDE_URL, RELEASE_NOTES_URL } from "../../data/links";
@@ -10,11 +10,12 @@ import { QrMark } from "../qr";
 
 type Props = {
   user: UserProfile;
+  authMode?: AuthMode;
   locationServices: boolean;
   onSignOut: () => void;
 };
 
-export function ProfilePage({ user, locationServices, onSignOut }: Props) {
+export function ProfilePage({ user, authMode, locationServices, onSignOut }: Props) {
   return (
     <div>
       <PageHeader
@@ -34,10 +35,10 @@ export function ProfilePage({ user, locationServices, onSignOut }: Props) {
             </p>
             <QrMark
               value={user.mobileId}
-              label={`VENU Mobile ID for ${user.firstName} ${user.lastName}`}
+              label={`VENU Mobile ID for ${[user.firstName, user.lastName].filter(Boolean).join(" ")}`}
             />
             <p class="venu-meta" style="margin-top: 12px">
-              {user.firstName} {user.lastName}
+              {[user.firstName, user.lastName].filter(Boolean).join(" ")}
               <br />
               {user.mobileId}
             </p>
@@ -60,14 +61,24 @@ export function ProfilePage({ user, locationServices, onSignOut }: Props) {
               <h2>Account</h2>
               <div class="venu-settings-item">
                 <div>
+                  <strong>Session</strong>
+                  <p class="venu-meta">
+                    {authMode === "account"
+                      ? "Signed in with email. Sign out on this device when you are done."
+                      : "Guest session with sample tickets. Nothing is saved to an account."}
+                  </p>
+                </div>
+              </div>
+              <div class="venu-settings-item">
+                <div>
                   <strong>Email</strong>
-                  <p class="venu-meta">{user.email}</p>
+                  <p class="venu-meta">{user.email || "None on this session"}</p>
                 </div>
               </div>
               <div class="venu-settings-item">
                 <div>
                   <strong>Phone</strong>
-                  <p class="venu-meta">{user.phone}</p>
+                  <p class="venu-meta">{user.phone || "None on this session"}</p>
                 </div>
               </div>
               <div class="venu-settings-item">

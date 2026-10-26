@@ -2,22 +2,45 @@ import { h } from "preact";
 import { useState } from "preact/hooks";
 import "oj-c/button";
 import "oj-c/input-text";
-import "oj-c/input-password";
-import { signIn } from "../data/store";
+import { requestMagicLink } from "../data/auth-client";
+import { signInAsGuest } from "../data/store";
 import { navigate } from "../data/router";
 
-export function SignIn() {
-  const [email, setEmail] = useState("alex.rivera@example.com");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+type Props = {
+  authError?: string;
+};
 
-  function complete(nextEmail?: string) {
-    if (nextEmail && !/^\S+@\S+\.\S+$/.test(nextEmail)) {
+export function SignIn({ authError }: Props) {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState(authError || "");
+  const [sending, setSending] = useState(false);
+  const [sentTo, setSentTo] = useState("");
+
+  function enterAsGuest() {
+    signInAsGuest();
+    navigate({ name: "discover" });
+  }
+
+  async function sendLink() {
+    const nextEmail = email.trim();
+    if (!/^\S+@\S+\.\S+$/.test(nextEmail)) {
       setError("Enter an email address that includes @ and a domain.");
       return;
     }
-    signIn(nextEmail);
-    navigate({ name: "discover" });
+    setSending(true);
+    setError("");
+    try {
+      await requestMagicLink(nextEmail);
+      setSentTo(nextEmail);
+    } catch (cause) {
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : "We could not email a sign-in link. Try again, or continue as guest."
+      );
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -34,54 +57,71 @@ export function SignIn() {
       </section>
       <section class="venu-signin-form">
         <h2>Sign in</h2>
-        <p class="venu-lede" style="margin-bottom: 20px">
-          Enter your email, or continue as Alex Rivera.
-        </p>
-        <form
-          class="venu-form"
-          onSubmit={(event) => {
-            event.preventDefault();
-            complete(email);
-          }}
-        >
-          <oj-c-input-text
-            id="email"
-            labelHint="Email"
-            value={email}
-            autocomplete="username"
-            onvalueChanged={(event: CustomEvent) => {
-              setEmail(event.detail.value || "");
-              setError("");
-            }}
-          ></oj-c-input-text>
-          <oj-c-input-password
-            id="password"
-            labelHint="Password"
-            value={password}
-            maskIcon="visible"
-            autocomplete="current-password"
-            onvalueChanged={(event: CustomEvent) => {
-              setPassword(event.detail.value || "");
-            }}
-          ></oj-c-input-password>
-          {error ? (
-            <p class="venu-meta" role="alert">
-              {error}
+        {sentTo ? (
+          <div class="venu-form">
+            <p class="venu-lede">
+              We sent a sign-in link to <strong>{sentTo}</strong>. It expires in 15 minutes.
             </p>
-          ) : (
-            <p class="venu-meta">Forgot password? Reset it from the email we have on file.</p>
-          )}
-          <oj-c-button
-            label="Continue"
-            chroming="callToAction"
-            onojAction={() => complete(email)}
-          ></oj-c-button>
-          <oj-c-button
-            label="Continue as Alex Rivera"
-            chroming="outlined"
-            onojAction={() => complete("alex.rivera@example.com")}
-          ></oj-c-button>
-        </form>
+            <p class="venu-meta">
+              Use the same browser after you open the email. If nothing arrives, check spam
+              or send the link again.
+            </p>
+            <oj-c-button
+              label="Send a new link"
+              chroming="callToAction"
+              onojAction={() => {
+                setSentTo("");
+                setError("");
+              }}
+            ></oj-c-button>
+            <oj-c-button
+              label="Continue as guest"
+              chroming="outlined"
+              onojAction={enterAsGuest}
+            ></oj-c-button>
+          </div>
+        ) : (
+          <form
+            class="venu-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void sendLink();
+            }}
+          >
+            <p class="venu-lede">
+              We email you a link. There is no password. Or continue as guest with sample tickets.
+            </p>
+            <oj-c-input-text
+              id="email"
+              labelHint="Email"
+              value={email}
+              autocomplete="username"
+              onvalueChanged={(event: CustomEvent) => {
+                setEmail(event.detail.value || "");
+                setError("");
+              }}
+            ></oj-c-input-text>
+            {error ? (
+              <p class="venu-meta" role="alert">
+                {error}
+              </p>
+            ) : (
+              <p class="venu-meta">The link opens VENU and signs you in on this device.</p>
+            )}
+            <oj-c-button
+              label={sending ? "Sending link…" : "Email me a link"}
+              chroming="callToAction"
+              disabled={sending}
+              onojAction={() => void sendLink()}
+            ></oj-c-button>
+            <oj-c-button
+              label="Continue as guest"
+              chroming="outlined"
+              disabled={sending}
+              onojAction={enterAsGuest}
+            ></oj-c-button>
+          </form>
+        )}
       </section>
     </div>
   );

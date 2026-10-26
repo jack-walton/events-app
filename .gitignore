@@ -3,5 +3,7 @@ web
 .DS_Store
 .vercel
 .env*
+!.env.example
 exchange_components
 staged-themes
+.env*.local

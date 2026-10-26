@@ -12,12 +12,20 @@
 
 html,
 body {
-  height: 100%;
+  min-height: 100%;
+  height: auto;
   font-family: var(--oj-html-font-family);
 }
 
-body.oj-web-applayout-body {
+html body.oj-web-applayout-body {
   background: var(--oj-body-bg-color);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+app-root {
+  display: block;
+  min-height: 100%;
 }
 
 .venu-avatar {
@@ -37,14 +45,14 @@ body.oj-web-applayout-body {
   }
 }
 
-#appContainer {
-  min-height: 100vh;
+html body #appContainer.oj-web-applayout-page,
+html body .venu-shell {
+  min-height: 100dvh;
 }
 
 .venu-shell {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   background: var(--oj-body-bg-color);
 }
 
@@ -116,13 +124,15 @@ body.oj-web-applayout-body {
 
 .venu-body {
   display: flex;
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  padding: 20px 24px 48px;
+  padding: 20px 24px 24px;
   gap: 24px;
   box-sizing: border-box;
+  align-items: flex-start;
 }
 
 .venu-nav {
@@ -199,6 +209,7 @@ body.oj-web-applayout-body {
 .venu-main {
   flex: 1;
   min-width: 0;
+  width: 100%;
 }
 
 .venu-pagehead {
@@ -471,6 +482,7 @@ body.oj-web-applayout-body {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
   gap: 16px;
+  align-items: start;
 }
 
 .venu-hero {
@@ -488,9 +500,10 @@ body.oj-web-applayout-body {
 }
 
 .venu-signin {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(320px, 480px);
+  box-sizing: border-box;
 }
 
 .venu-signin-story {
@@ -597,7 +610,7 @@ body.oj-web-applayout-body {
 
   .venu-body {
     flex-direction: column;
-    padding: 16px 16px calc(76px + env(safe-area-inset-bottom, 0px));
+    padding: 16px 16px calc(72px + env(safe-area-inset-bottom, 0px));
   }
 
   .venu-nav {

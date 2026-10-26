@@ -63,7 +63,7 @@ export function Header({ user, onSignOut }: Props) {
               chroming="borderless"
             >
               <span class="venu-userchip">
-                {user.firstName} {user.lastName}
+                {[user.firstName, user.lastName].filter(Boolean).join(" ")}
               </span>
               <span
                 slot="endIcon"

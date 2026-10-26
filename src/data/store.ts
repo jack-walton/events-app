@@ -1,6 +1,8 @@
 import { useEffect, useState } from "preact/hooks";
+import { signOutAccount } from "./auth-client";
 import { createSeedState, PAST_EVENT } from "./seed";
 import {
+  AccountSession,
   AppState,
   EventItem,
   NotificationItem,
@@ -27,11 +29,78 @@ function loadState(): AppState {
   }
 }
 
+function guestUser(): AppState["user"] {
+  return {
+    firstName: "Guest",
+    lastName: "",
+    email: "",
+    phone: "",
+    location: "Brooklyn, NY",
+    mobileId: "VNU-GUEST"
+  };
+}
+
+function isLegacyAlex(user: AppState["user"]): boolean {
+  return (
+    user.email === "alex.rivera@example.com" ||
+    `${user.firstName} ${user.lastName}`.trim() === "Alex Rivera"
+  );
+}
+
 function hydrate(next: AppState): AppState {
   const events = next.events.some((event) => event.id === PAST_EVENT.id)
     ? next.events
     : [...next.events, PAST_EVENT];
-  return { ...next, events };
+  const authMode = next.authMode ?? (next.signedIn ? "guest" : undefined);
+  const asGuest = authMode !== "account";
+  return {
+    ...next,
+    events,
+    authMode,
+    user: asGuest && (isLegacyAlex(next.user) || !next.user.firstName) ? guestUser() : next.user,
+    transfers: asGuest
+      ? next.transfers.map((transfer) => ({
+          ...transfer,
+          senderName:
+            transfer.senderEmail === "alex.rivera@example.com" || transfer.senderName === "Alex Rivera"
+              ? "Guest"
+              : transfer.senderName,
+          senderEmail:
+            transfer.senderEmail === "alex.rivera@example.com" ? "" : transfer.senderEmail,
+          recipientName:
+            transfer.recipientEmail === "alex.rivera@example.com" ||
+            transfer.recipientName === "Alex Rivera"
+              ? "Guest"
+              : transfer.recipientName,
+          recipientEmail:
+            transfer.recipientEmail === "alex.rivera@example.com" ? "" : transfer.recipientEmail
+        }))
+      : next.transfers
+  };
+}
+
+function capitalize(value: string): string {
+  return value ? value.charAt(0).toUpperCase() + value.slice(1).toLowerCase() : value;
+}
+
+function namesFromAccount(session: AccountSession): Pick<AppState["user"], "firstName" | "lastName"> {
+  if (session.name?.trim()) {
+    const parts = session.name.trim().split(/\s+/);
+    return {
+      firstName: parts[0],
+      lastName: parts.slice(1).join(" ")
+    };
+  }
+  const local = session.email.split("@")[0] || "friend";
+  const parts = local.split(/[._-]+/).filter(Boolean);
+  return {
+    firstName: capitalize(parts[0] || "Friend"),
+    lastName: parts[1] ? capitalize(parts[1]) : ""
+  };
+}
+
+function mobileIdFrom(userId: string): string {
+  return `VNU-${userId.replace(/-/g, "").slice(0, 8).toUpperCase()}`;
 }
 
 function persist() {
@@ -64,25 +133,66 @@ export function useAppState(): AppState {
   return snapshot;
 }
 
-export function signIn(email?: string) {
-  update((current) => ({
-    ...current,
+export function signInAsGuest() {
+  update(() => ({
+    ...hydrate(createSeedState()),
     signedIn: true,
-    user: {
-      ...current.user,
-      email: email?.trim() || current.user.email
-    }
+    authMode: "guest"
   }));
 }
 
+export function signInWithAccount(session: AccountSession) {
+  update((current) => {
+    const sameAccount =
+      current.authMode === "account" && current.user.email === session.email;
+    const base = sameAccount
+      ? current
+      : {
+          ...hydrate(createSeedState()),
+          tickets: [],
+          transfers: [],
+          notifications: []
+        };
+    const names = namesFromAccount(session);
+    return {
+      ...base,
+      signedIn: true,
+      authMode: "account",
+      user: {
+        ...base.user,
+        ...names,
+        email: session.email,
+        phone: sameAccount ? current.user.phone : "",
+        mobileId: mobileIdFrom(session.id)
+      }
+    };
+  });
+}
+
 export function signOut() {
-  update((current) => ({ ...current, signedIn: false }));
+  update((current) => ({ ...current, signedIn: false, authMode: undefined }));
+}
+
+export async function signOutCurrent() {
+  await signOutAccount();
+  signOut();
 }
 
 export function resetAccount() {
-  state = hydrate(createSeedState());
-  state = { ...state, signedIn: true };
-  persist();
+  const current = getState();
+  if (current.authMode === "account") {
+    update(() => ({
+      ...hydrate(createSeedState()),
+      signedIn: true,
+      authMode: "account",
+      user: current.user,
+      tickets: [],
+      transfers: [],
+      notifications: []
+    }));
+    return;
+  }
+  signInAsGuest();
 }
 
 export function getEvent(id: string): EventItem | undefined {
